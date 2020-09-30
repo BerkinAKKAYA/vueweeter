@@ -1,4 +1,6 @@
 # vueweeter
 A Simple Social Media App Created With Vue &amp; Vuefire
 
-> Still In Development
+[Try Here](https://berkinakkaya.github.io/vueweeter)
+
+> `docs` folder is actually the `build` folder but named it as `docs` to publish it on GitHub Pages.
