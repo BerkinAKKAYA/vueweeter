@@ -45,8 +45,8 @@ Vue.use(firestorePlugin);
 
 const db = firebase
 	.initializeApp({
-		projectId: "vueweeter",
-		databaseURL: "https://vueweeter.firebaseio.com"
+		projectId: "PROJECT ID HERE",
+		databaseURL: "DATABASE URL HERE"
 	})
 	.firestore();
 
