@@ -1,7 +1,9 @@
 {
   "name": "vueweeter",
-  "version": "0.1.0",
-  "private": true,
+  "description": "Realtime Social Media App",
+  "version": "1.0.0",
+  "author": "Berkin AKKAYA",
+  "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build"
