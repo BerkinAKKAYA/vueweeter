@@ -1,9 +1,6 @@
 <template>
 	<div id="app">
-		<header>
-			<h1>vueweeter</h1>
-			<span>Account</span>
-		</header>
+		<h1>vueweeter</h1>
 		<div id="vueweet">
 			<input
 				type="text"
@@ -28,43 +25,43 @@
 				v-for="vueweet in vueweets"
 				:key="vueweet.createdAt"
 			>
-				<p class="metadata">
-					<span>{{ vueweet.username }} <small>said,</small></span>
-					<span class="time">
-						{{ distance(vueweet.createdAt, Date.now()) }} ago
-					</span>
-				</p>
-				<p class="content">{{ vueweet.content }}</p>
+				<span class="content">{{ vueweet.content }}</span>
+				<span class="time">
+					{{ distance(vueweet.createdAt, Date.now()) }} ago
+				</span>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
+import Vue from "vue";
+import { firestorePlugin } from "vuefire";
 import { formatDistance } from "date-fns";
+import firebase from "firebase/app";
+import "firebase/firestore";
+
+Vue.use(firestorePlugin);
+
+const db = firebase
+	.initializeApp({
+		projectId: "vueweeter",
+		databaseURL: "https://vueweeter.firebaseio.com"
+	})
+	.firestore();
+
+const posts = db.collection("posts");
 
 export default {
 	name: "App",
 	data: () => ({
 		vueweet: "",
-		vueweets: [
-			{
-				username: "berkinakkaya",
-				createdAt: Date.now() + 100000,
-				content: "First vueweet ever!"
-			},
-			{
-				username: "berkinakkaya",
-				createdAt: Date.now() + 1000000,
-				content: "I was here!"
-			}
-		]
+		vueweets: []
 	}),
 	methods: {
 		sendVueweet() {
 			if (this.vueweet) {
-				this.vueweets.unshift({
-					username: "anonymous",
+				db.collection("vueweets").add({
 					createdAt: Date.now(),
 					content: this.vueweet.trim()
 				});
@@ -77,6 +74,9 @@ export default {
 		distance(a, b) {
 			return formatDistance(a, b);
 		}
+	},
+	firestore: {
+		vueweets: db.collection("vueweets").orderBy("createdAt")
 	}
 };
 </script>
@@ -87,22 +87,9 @@ export default {
 	width: 50%;
 	margin: 100px 0;
 }
-#app header {
-	width: 100%;
-	display: flex;
-	align-items: baseline;
-	justify-content: space-between;
-}
-#app header h1 {
+#app h1 {
 	font-size: 3em;
-}
-#app header span {
-	font-size: 1.5em;
-	opacity: 0.75;
-	cursor: pointer;
-}
-#app header span:hover {
-	opacity: 1;
+	text-align: center;
 }
 #app #vueweet {
 	position: relative;
@@ -157,40 +144,24 @@ export default {
 #app #vueweets {
 	margin-top: 50px;
 	position: relative;
+	display: flex;
+	flex-direction: column-reverse;
 }
 #app #vueweets .vueweet {
 	margin-top: 25px;
 	padding: 25px;
 	border: 1px solid rgba(255, 255, 255, 0.5);
 	border-radius: 10px;
-	cursor: pointer;
 	box-shadow: 0 0 0px rgba(0, 0, 0, 0);
 	transition: all 0.5s ease;
+	display: grid;
+	grid-template-columns: 1fr 180px;
 }
-#app #vueweets .vueweet:hover {
-	box-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
-}
-#app #vueweets .vueweet .metadata {
-	font-size: 1.2em;
-	display: flex;
-	justify-content: space-between;
-}
-#app #vueweets .vueweet .metadata small {
+#app #vueweets .vueweet .time {
 	opacity: 0.5;
-}
-#app #vueweets .vueweet .metadata span {
-	color: white;
-}
-#app #vueweets .vueweet .metadata .time {
-	opacity: 0.75;
+	text-align: right;
 }
 #app #vueweets .vueweet .content {
-	font-size: 1.2em;
-	margin-top: 20px;
-	padding-left: 5px;
-}
-#app #vueweets .vueweet .content::before {
-	content: "> ";
-	opacity: 0.5;
+	font-size: 1.5em;
 }
 </style>

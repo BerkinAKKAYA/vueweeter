@@ -7,7 +7,9 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
-    "vue": "^2.6.11"
+    "firebase": "^7.21.1",
+    "vue": "^2.6.11",
+    "vuefire": "^2.2.4"
   },
   "devDependencies": {
     "@vue/cli-service": "~4.5.0",
